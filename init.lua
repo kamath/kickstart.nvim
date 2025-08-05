@@ -233,6 +233,20 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end, 
 }) 
 
+-- Ensure diagnostic underlines are always visible
+vim.api.nvim_create_autocmd('ColorScheme', {
+  desc = 'Ensure diagnostic underlines are visible',
+  group = vim.api.nvim_create_augroup('diagnostic-underlines', { clear = true }),
+  callback = function()
+    vim.defer_fn(function()
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineError', { underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineWarn', { underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineInfo', { underline = true })
+      vim.api.nvim_set_hl(0, 'DiagnosticUnderlineHint', { underline = true })
+    end, 100)
+  end,
+})
+
 -- [[ Install `lazy.nvim` plugin manager ]] 
 --    See ":help lazy.nvim.txt" or https://github.com/folke/lazy.nvim for more info 
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim' 

@@ -9,6 +9,10 @@ return {
         markdown = { 'markdownlint' },
       }
 
+      -- Disable nvim-lint for typescript files, as tsserver provides diagnostics
+      lint.linters_by_ft['typescript'] = nil
+      lint.linters_by_ft['typescriptreact'] = nil
+
       -- To allow other plugins to add linters to require('lint').linters_by_ft,
       -- instead set linters_by_ft like this:
       -- lint.linters_by_ft = lint.linters_by_ft or {}
