@@ -582,7 +582,8 @@ require('lazy').setup({
           -- Jump to the definition of the word under your cursor. 
           --  This is where a variable was first declared, or where a function is defined, etc. 
           --  To jump back, press <C-t>. 
-          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition') 
+          map('grd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition') 
 
           -- WARN: This is not Goto Definition, this is Goto Declaration. 
           --  For example, in C this would take you to the header. 
@@ -712,8 +713,51 @@ require('lazy').setup({
         --    https://github.com/pmizio/typescript-tools.nvim 
         -- 
         -- But for many setups, the LSP (`ts_ls`) will work just fine 
-        -- ts_ls = {}, -- Commented out because typescript-tools.nvim is being used instead 
-        -- 
+        vtsls = {
+          settings = {
+            typescript = {
+              inlayHints = {
+                parameterNames = { enabled = 'all' },
+                parameterTypes = { enabled = true },
+                variableTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                enumMemberValues = { enabled = true },
+              },
+              preferences = {
+                importModuleSpecifier = 'relative',
+                includePackageJsonAutoImports = 'on',
+              },
+              suggest = {
+                autoImports = true,
+                completeFunctionCalls = true,
+              },
+              updateImportsOnFileMove = { enabled = 'always' },
+            },
+            javascript = {
+              inlayHints = {
+                parameterNames = { enabled = 'all' },
+                parameterTypes = { enabled = true },
+                variableTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                enumMemberValues = { enabled = true },
+              },
+              preferences = {
+                importModuleSpecifier = 'relative',
+                includePackageJsonAutoImports = 'on',
+              },
+              suggest = {
+                autoImports = true,
+                completeFunctionCalls = true,
+              },
+              updateImportsOnFileMove = { enabled = 'always' },
+            },
+            vtsls = {
+              autoUseWorkspaceTsdk = true,
+            },
+          },
+        },
 
         lua_ls = { 
           -- cmd = { ... }, 
@@ -744,9 +788,11 @@ require('lazy').setup({
       -- 
       -- You can add other tools here that you want Mason to install 
       -- for you, so that they are available from within Neovim. 
-      local ensure_installed = vim.tbl_keys(servers or {}) 
-      vim.list_extend(ensure_installed, { 
-        'stylua', -- Used to format Lua code 
+      local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, {
+        'stylua', -- Used to format Lua code
+        'vtsls', -- TypeScript language server
+        'typescript-language-server', -- Alternative TypeScript LSP
       }) 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed } 
 
